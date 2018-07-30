@@ -133,3 +133,12 @@ html, body {
 .code div {
 	padding: 10px 0;
 }
+
+.inputWrapper textarea {
+	display: inline-block;
+}
+
+.inputWrapper div {
+	display: inline-block;
+	padding: 0 0 0 20px;
+}

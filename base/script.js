@@ -60,9 +60,13 @@ function renderRunnable(container, id, code, preview, title, description) {
   if (title) wrapper.appendChild(h3);
   if (description) wrapper.appendChild(desc);
   if (preview) wrapper.appendChild(pre);
-  wrapper.appendChild(input);
+
+  var inputWrapper = document.createElement("div");
+  inputWrapper.className = 'inputWrapper';
+  inputWrapper.appendChild(input);
+  inputWrapper.appendChild(results);
+  wrapper.appendChild(inputWrapper);
   wrapper.appendChild(button);
-  wrapper.appendChild(results);
 
   container.appendChild(wrapper);
 }
@@ -108,6 +112,14 @@ function renderTest(container, id, code, preview, solution, title, description) 
 
   button.onclick = function() {
     evaluateClear(id);
+
+    setTimeout(function() {
+      var resultHTML = document.getElementById(id + '-output').innerHTML;
+      var cleanText = resultHTML.replaceAll('<br>','\n').replace(/<\/?[^>]+(>|$)/g, "").trim();
+      console.log(cleanText)
+      console.log(preview);      
+      console.log(cleanText === preview);      
+    }, 100)
   }
 
   solutionButton.onclick = function() {
@@ -122,10 +134,13 @@ function renderTest(container, id, code, preview, solution, title, description) 
   if (title) wrapper.appendChild(h3);
   if (description) wrapper.appendChild(desc);
   if (preview) wrapper.appendChild(pre);
-  wrapper.appendChild(input);
-  wrapper.appendChild(renderSpacer());
+
+  var inputWrapper = document.createElement("div");
+  inputWrapper.className = 'inputWrapper';
+  inputWrapper.appendChild(input);
+  inputWrapper.appendChild(results);
+  wrapper.appendChild(inputWrapper);
   wrapper.appendChild(button);
-  wrapper.appendChild(results);
   if (solution) {
       wrapper.appendChild(renderSpacer());
       wrapper.appendChild(solutionPre);
