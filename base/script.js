@@ -1,7 +1,222 @@
 String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
+    const target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
 };
+
+/**
+ * Generate uuid
+ * 
+ * @return {}
+ */
+const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+const _uuid = () => s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+
+/**
+ * @param  {items}
+ * @return {el}
+ */
+const _wrapper = (...lst) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = '_wrapper';
+    lst.forEach(item => wrapper.appendChild(item));
+    return wrapper;
+}
+
+/**
+ * Renders a row of elements
+ * 
+ * @param  {lst}
+ * @return {el}
+ */
+const _row = (...lst) => {
+    const row = _wrapper(...lst);
+    row.className = '_row';
+    return row;
+};
+
+/**
+ * Renders a spacer
+ * 
+ * @return {el}
+ */
+const _spacer = (horizontal) => {
+    const spacer = document.createElement("div");
+    if (horizontal) spacer.className = '_horizontalSpacer';
+    else spacer.className = '_verticalSpacer';
+    return spacer;
+};
+
+/**
+ * Renders the block
+ * 
+ * @param  {container}
+ * @param  {data}
+ * @param  {id}
+ * @return {el}
+ */
+const render = (container, data) => {
+    const wrapper = _wrapper(...data);
+    wrapper.className = '_block';
+    container.appendChild(wrapper);
+};
+
+/**
+ * Renders title
+ * 
+ * @param  {str}
+ * @param  {id}
+ * @return {el}
+ */
+const _title = (str, id) => {
+    const h3 = document.createElement("h3");
+    h3.innerHTML = str.replaceAll('\n', '<br />');
+    if (id) h3.id = id;
+    return h3;
+};
+const _titleWrapped = (str) => {
+    return _wrapper(_title(str));
+}
+
+/**
+ * Renders text
+ * 
+ * @param  {str}
+ * @param  {id}
+ * @return {el}
+ */
+const _text = (str, id) => {
+    const p = document.createElement("p");
+    p.innerHTML = str.replaceAll('\n', '<br />');
+    if (id) p.id = id;
+    return p;
+};
+const _textWrapped = (str) => {
+    return _wrapper(_text(str));
+}
+
+/**
+ * Renders new block
+ * 
+ * @param  {str}
+ * @param  {id}
+ * @return {el}
+ */
+const _block = (str, id) => {
+    const pre = document.createElement("pre");
+    pre.innerHTML = str;
+    if (id) pre.id = id;
+    return pre;
+}
+const _blockWrapped = (str) => {
+    return _wrapper(_block(str));
+}
+
+const _warning = (str, id) => {
+    const div = document.createElement("div");
+    div.className = '_warning';
+    div.innerHTML = str;
+    if (id) div.id = id;
+    return div;
+}
+const _warningWrapped = (str) => {
+    return _wrapper(_warning(str));
+}
+
+/**
+ * Renders a list of items
+ * 
+ * @param  {items}
+ * @param  {id}
+ * @return {el}
+ */
+const _list = (items, id) => {
+    const ul = document.createElement("ul");
+    if (id) ul.id = id;
+    items.forEach(function(item) {
+        const li = document.createElement("li");
+        if (typeof item === 'string') {
+            li.innerHTML = item.replaceAll('\n', '<br />');
+        }
+        else {
+            li.innerHTML = item[0].replaceAll('\n', '<br />');
+            li.appendChild(_list(item[1], id + '_1'));
+        }
+        ul.appendChild(li);
+    });
+    return ul;
+}
+const _listWrapped = (items) => {
+    return _wrapper(_list(items));
+}
+
+/**
+ * Renders a button
+ * 
+ * @param  {name}
+ * @param  {cback}
+ * @param  {id}
+ * @return {el}
+ */
+const _button = (name, cback, id) => {
+    const button = document.createElement("button");
+    button.type = 'button';
+    button.innerHTML = name;
+    if (id) button.id = id;
+    button.onclick = function() {
+        cback(button);
+    }
+    return button;
+}
+const _buttonWrapped = (name, cback, id) => {
+    return _wrapper(_button(name, cback, id));
+}
+
+/**
+ * Interaction box
+ * Code runnable
+ * 
+ * @param  {code}
+ * @param  {solution}
+ * @return {el}
+ */
+const _interactionBox = (code, solution, _id) => {
+    const id = _id || _uuid();
+
+    const input = document.createElement("textarea");
+    input.oninput = function() {
+      this.style.height = "";
+      this.style.height = this.scrollHeight + "px";
+    };
+    input.name = id;
+    input.cols = "60";
+    input.rows = "4";
+    input.value = code;
+    input.id = id;
+    setTimeout(() => {
+      input.style.height = "";
+      input.style.height = input.scrollHeight + "px";
+    }, 10);
+
+    const output = _block('', id + '-output');
+    const button = _buttonWrapped('Run', (_) => {
+        evaluateClear(id);
+    });
+
+    if (solution) {
+        const solutionBlock = _block(solution, id + '-solution');
+        solutionBlock.className = 'hidden';
+        const solutionButton = _buttonWrapped('Solution', (_) => {
+            solutionBlock.className = '';
+            solutionButton.className = 'hidden';
+        }, id + '-solution-button');
+        return _wrapper(_row(input, _spacer(true), output), button, solutionBlock, solutionButton);
+    }
+    else {
+        return _wrapper(_row(input, _spacer(true), output), button);
+    }
+};
+
+
 
 function renderBulletPoints(container, lst, title, description) {
   var wrapper = document.createElement("div");
@@ -317,7 +532,7 @@ function evaluateShow(inID) {
   try {
     var e = evaluate(inID);
     if (e != null) {
-      var msg = "<font color=red>Error:</font>" + e.message;  
+      var msg = "<font color=red>Error:   </font>" + e.message;  
       if (e.userLine) msg += " line:" + e.userLine;
       print(msg);
       if (e.userLine) {
@@ -873,6 +1088,11 @@ function printOne(something) {
   
   if (something instanceof Array) {
     something = "[" + something.join(", ") + "]";
+  }
+  
+  
+  if (something instanceof Object) {
+    something = Object.keys(something).map(key => `${key} => ${something[key]}`).join("<br />");
   }
   
   if (typeof something == "string" || typeof something == "number") {  

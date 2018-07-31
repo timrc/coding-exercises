@@ -16,15 +16,139 @@ html, body {
 	display: none !important;
 }
 
+#container {
+    padding-bottom: 300px;
+}
+
+._block {
+    margin: 20px 40px 60px 40px;
+}
+
+._wrapper {
+    margin-bottom: 20px;
+}
+
+._row {
+    display: flex;
+}
+
+._row > * {
+    display: inline-block;
+    flex: 1;
+}
+
+._horizontalSpacer {
+    width: 20px;
+    flex: none;
+}
+
+._verticalSpacer {
+    height: 20px;
+    flex: none;
+}
+
+._block {
+    margin: 20px 40px 60px 40px;
+}
+
+._block h3 {
+    font-weight: 700;
+    font-size: 1.5em;
+    text-transform: none;
+    line-height: 1.38em;
+    color: #000;
+    margin-top: 1.5em;
+    margin-bottom: .5em;
+}
+
+._block p {
+    margin-bottom: 1.41575em;
+    font-size: 1em;
+    line-height: 1.6em !important;
+    color: #313533;
+    display: block;
+}
+
+._block ._warning {
+    background-color: #ffdddd;
+    border-left: 6px solid #f44336;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding: 16px;
+    max-width: 600px;
+}
+
+._block ul {
+    margin: 1em 0;
+    padding: 0 0 0 1em;
+    color: #313533;
+    padding-left: 1em;
+    list-style: disc outside none;
+    margin-left: 25px;
+}
+
+._block ul li {
+    margin-bottom: 0.70788em;
+    list-style-type: disc;
+}
+
+._block pre {
+    margin: 0 0 1em 0;
+    color: #313533;
+    font-size: 1em;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.4em;
+}
+
+._block textarea {
+    min-height: 7em;
+    margin-bottom: 20px;
+    position: relative;
+    line-height: 25px;
+    font-size: 14px;
+    transition: none;
+    border: 1px solid #D1D5D3;
+    border-radius: 0;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+    box-sizing: border-box;
+    padding: 5px 12px;
+    vertical-align: top;
+    -webkit-font-smoothing: antialiased;
+    background-color: #fff;
+    padding: 8px 12px;
+    border-left: 4px solid #4CAF50;
+    word-wrap: break-word;
+    outline: none;
+    max-width: 600px;
+    font-family: "Courier New", Courier, monospace;
+}
+
+._block button {
+    border: 1px solid #d5cccc;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 0 0 #fff;
+    color: #333;
+    display: block;
+    background-image: linear-gradient(#f4f4f4,#dbd4d4);
+    padding: 7px 18px;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #fefefe;
+    background-clip: padding-box;
+    font-size: 0.8125em;
+    width: 220px;
+    height: 40px;
+    background-color: lightgray;
+}
+
+
+
+
+
 .spacer {
 	display: block;
 	height: 30px;
 	padding: 0;
-}
-
-#container {
-	padding-bottom: 300px;
-	/*max-width: 800px;*/
 }
 
 
