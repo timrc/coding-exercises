@@ -1,5 +1,6 @@
 function run() {
 	var container = document.getElementById('container');
+    _renderDebugToggle(container);
 
     render(container, [
     	_title('First Code Example - Print'),

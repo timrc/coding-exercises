@@ -1,6 +1,18 @@
+window.DEBUG = false;
+
 String.prototype.replaceAll = function(search, replacement) {
     const target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+/**
+ * Generate random number between min and max
+ * @param  {[type]} min [description]
+ * @param  {[type]} max [description]
+ * @return {[type]}     [description]
+ */
+const _getRandomNumber = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 /**
@@ -44,6 +56,24 @@ const _spacer = (horizontal) => {
     if (horizontal) spacer.className = '_horizontalSpacer';
     else spacer.className = '_verticalSpacer';
     return spacer;
+};
+
+
+/**
+ * Renders debug toggle
+ * @return {[type]} [description]
+ */
+const _renderDebugToggle = (container) => {
+    const toggle = document.createElement("div");
+    toggle.id = 'debug-toggle';
+    toggle.innerHTML = 'Debug';
+    toggle.onclick = function() {
+        if (window.DEBUG) toggle.className = '';
+        else toggle.className = 'active';
+        window.DEBUG = !window.DEBUG;
+    };
+
+    container.appendChild(toggle);
 };
 
 /**
@@ -920,7 +950,6 @@ function getImageBySrc(filename) {
 
 function preloadImages(names) {
   
-  
   if (names.length == 0) {
      window.globalImageFn();
      return;
@@ -1042,7 +1071,19 @@ function loadImage(filename) {
 
 
 function print() {
-  
+  var loc = false;
+  try {
+    var stack = new Error().stack || '';
+    stack = stack.split('\n').map(function (line) { return line.trim(); });
+    console.log('A', stack);
+    console.log('B', stack[2]);
+    console.log('C', stack[2].split('anonymous>:'));
+    console.log('D', stack[2].split('anonymous>:')[1]);
+    console.log('E', stack[2].split('anonymous>:')[1].split(':'));
+    console.log('F', stack[2].split('anonymous>:')[1].split(':')[0]);
+    loc = stack[2].split('anonymous>:')[1].split(':')[0];
+  } catch(e) {}
+
   if (window.globalPrintCount <= 0) {
     if (window.globalPrintCount == 0) {
       printOne("***print output limited***");
@@ -1053,33 +1094,43 @@ function print() {
   }
   window.globalPrintCount--;
     
-
+  const wrapper = createWrapper(loc);
  for (var i=0; i<arguments.length; i++) {
-   printOne(arguments[i], i==arguments.length-1);
+   printOne(wrapper, arguments[i], i==arguments.length-1);
  }
- printOne("<br>");
-}
-
-
-function printStart() {
- for (var i=0; i<arguments.length; i++) {
-   printOne(arguments[i]);
+ if (!window.DEBUG) {
+   printOne(null, "<br>");
  }
 }
-
-
 
 
 function getOutput() {
   return document.getElementById(window.globalRunId + "-output");
 }
 
+function createWrapper(loc) {
+    if (!window.DEBUG) return null;
 
+    var output = getOutput();
+    var wrapper = document.createElement("text");
+    wrapper.className = "outputWrapper";
 
-function printOne(something) {
-  var output = getOutput();
+    if (loc) {
+      var lineOfCode = document.createElement("text");
+      lineOfCode.className = "loc";
+      lineOfCode.innerHTML = `${loc}: `;
+      wrapper.appendChild(lineOfCode);
+    }
+    else {
+      wrapper.className = "outputWrapperError";
+    }
 
-  
+    output.appendChild(wrapper);
+    return wrapper;
+}
+
+function printOne(wrapper, something) {
+  var output = wrapper || getOutput();
   
   if (something.getString) {
     something = something.getString();
@@ -1092,13 +1143,15 @@ function printOne(something) {
   
   
   if (something instanceof Object) {
-    something = Object.keys(something).map(key => `${key} => ${something[key]}`).join("<br />");
+    var longestKeyLength = Object.keys(something).reduce((r, s) => r > s.length ? r : s.length, 0);
+    something = Object.keys(something).map(key => `${key.padStart(longestKeyLength, ' ')} => ${something[key]}`).join("<br />");
   }
   
   if (typeof something == "string" || typeof something == "number") {  
     var p = document.createElement("text");
     var spacer = " ";
     if (something == "<br>") spacer = "";
+
     p.innerHTML = something + spacer;  
     output.appendChild(p);
     

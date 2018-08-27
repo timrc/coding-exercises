@@ -1,5 +1,6 @@
 function run() {
     var container = document.getElementById('container');
+    _renderDebugToggle(container);
 
     render(container, [
         _title('Objects'),
@@ -50,11 +51,31 @@ print(lastName2);`),
     ])
 
     render(container, [
+        _title('Assigning new Object Properties'),
+        _text('You can add new object properties or modify existing ones in two ways'),
+        _block(`objectName.propertyName = 'My new property new value'`),
+        _block(`objectName["propertyName"] = 'My new property new value'`),
+        _interactionBox(`var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
+
+print(person.firstName);
+
+person.firstName = 'Mathew';
+print(person.firstName);`)
+    ])
+
+    render(container, [
         _title('Example 1'),
         _text(`Add the following property and value to the person object: country: USA`),
         _interactionBox(`var person = {firstName:"John", lastName:"Doe"};
 
 print(person.country)`, `var person = {firstName:"John", lastName:"Doe", country: "USA"};
+
+print(person.country);
+
+// OR
+
+var person = {firstName:"John", lastName:"Doe"};
+person.country = "USA";
 
 print(person.country)`),
     ]);
@@ -62,11 +83,10 @@ print(person.country)`),
     render(container, [
         _title('Test 1'),
         _text(`Create an object called person with name = John, age = 50.
-Then, access the object to display "John is 50 years old".
+Then, access the object properties and display "John is 50 years old".
 `),
         _interactionBox(`// Create the object here`),
     ]);
-
 }
 
 

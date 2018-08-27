@@ -1,5 +1,6 @@
 function run() {
     var container = document.getElementById('container');
+    _renderDebugToggle(container);
 
     render(container, [
         _title('Arrays'),
@@ -152,27 +153,38 @@ print(y)`),
 print(cars[1])`),
     ]);
 
+    var __demo__allItems = ["Saab", "Volvo", "BMW", "Mercedes", "Ferrari", "Fiat", "Peugeot"];
+    var __demo__newItems = ["Mercedes", "Ferrari", "Fiat", "Peugeot"];
+
+    var __test1__item = __demo__newItems[_getRandomNumber(0, __demo__newItems.length)];
     render(container, [
         _title('Test 1'),
-        _text(`Change the first item of cars to "Opel" by referring to the index number, and display the whole array.`),
+        _text(`Change the first item of cars to "${__test1__item}" by referring to the index number, and display the whole array.`),
         _interactionBox(`var cars = ["Saab", "Volvo", "BMW"];`),
     ]);
 
+    var __test2__item1 = __demo__allItems[_getRandomNumber(0, 1)];
+    var __test2__item2 = __demo__allItems[_getRandomNumber(2, 3)];
+    var __test2__item3 = __demo__allItems[_getRandomNumber(4, 6)];
     render(container, [
         _title('Test 2'),
-        _text(`Create an array named cars, assign the values "Saab", "Volvo" and "BMW" to it, and display it.".`),
+        _text(`Create an array named cars, assign the values "${__test2__item1}", "${__test2__item2}" and "${__test2__item3}" to it, and display it.".`),
         _interactionBox(`// Create the object here`),
     ]);
 
+    var __test3__item1 = __demo__allItems[_getRandomNumber(0, 1)];
+    var __test3__item2 = __demo__allItems[_getRandomNumber(2, 3)];
+    var __test3__item3 = __demo__allItems[_getRandomNumber(4, 6)];
     render(container, [
         _title('Test 3'),
         _text(`Use the length property to display the number of array items in cars.`),
-        _interactionBox(`var cars = ["Saab", "Volvo", "BMW"];`),
+        _interactionBox(`var cars = ["${__test3__item1}", "${__test3__item2}", "${__test3__item3}"];`),
     ]);
 
+    var __test4__item = __demo__newItems[_getRandomNumber(0, __demo__newItems.length)];
     render(container, [
         _title('Test 4'),
-        _text(`Use the length property to add a new item to cars: Mercedes.`),
+        _text(`Use the length property to add a new item to cars: ${__test4__item}.`),
         _interactionBox(`var cars = ["Saab", "Volvo", "BMW"];`),
     ]);
 }

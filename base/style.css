@@ -266,3 +266,41 @@ html, body {
 	display: inline-block;
 	padding: 0 0 0 20px;
 }
+
+
+
+
+.outputWrapper {
+    box-shadow: 0px 6px 8px -6px #00000026;
+    display: block;
+    padding: 10px 5px;
+}
+
+.outputWrapperError {
+    box-shadow: 0px 6px 8px -6px #fb00ffbd;
+    display: block;
+    padding: 10px 5px;
+}
+
+.outputWrapper .loc {
+    font-weight: bold;
+}
+
+
+#debug-toggle {
+    position: fixed;
+    right: 4px;
+    top: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    background: #41b5c3;
+    color: white;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    cursor: pointer;
+}
+#debug-toggle:hover {
+    opacity: 0.8;
+}
+#debug-toggle.active {
+    background: #9a41c3;
+}
